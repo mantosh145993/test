@@ -39,7 +39,7 @@
                             <p>No image preview available</p>
                             @endif
                         </div>
-                        <!-- <div class="mt-4">
+                        <div class="mt-4">
                             <x-input-label for="options" value="Question options" />
                             @foreach ($options as $index => $option)
                                 <div class="flex mt-2">
@@ -63,14 +63,13 @@
                             <x-primary-button wire:click="addOption" type="button" class="mt-2">
                                 Add
                             </x-primary-button>
-                        </div> -->
-                        <!-- Question Options -->
+                        </div> 
+                        <!-- Question Options
                         <div class="mt-4">
                             <x-input-label for="options" value="Question options" />
 
                             @foreach ($options as $index => $option)
                             <div class="flex mt-2">
-                                <!-- Froala Editor for Each Option -->
                                 <div class="w-full" wire:ignore>
                                     <textarea id="option_{{ $index }}" class="block w-full"></textarea>
                                     {!! old('options.' . $index . '.text', $option['text'] ?? '') !!}
@@ -89,11 +88,9 @@
                             <x-input-error :messages="$errors->get('options.' . $index . '.text')" class="mt-2" />
                             @endforeach
                         </div>
-
-                        <!-- Add Option Button -->
                         <x-primary-button wire:click="addOption" type="button" class="mt-2">
                             Add Option
-                        </x-primary-button>
+                        </x-primary-button> -->
                
                 <div class="mt-4">
                     <x-input-label for="code_snippet" value="Code snippet" />
