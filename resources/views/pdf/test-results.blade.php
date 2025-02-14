@@ -4,8 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Test Results</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,7 +11,7 @@
         }
 
         table {
-            width: 50%;
+            width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
@@ -29,6 +27,7 @@
             padding: 8px;
             text-align: left;
         }
+
         .question-text table {
             width: 50%;
             border-collapse: collapse;
@@ -57,17 +56,13 @@
 <body>
     <div class="row">
         <div class="col text-center">
-            <h3>BODMAS Education Services Pvt Ltd</h3>
-            <p>Address: Z -169 Ground Floor, Sector 12, Noida, Uttar Pradesh 201301 </br>
-             Hours: Open 9 am ⋅ Closes 8 pm </br>
-             Phone: 09511626721</p>
+            <h4 >Test Results ({{ $test->quiz->title }} )</h4>
         </div>
-        <div class="col text-center">
-            <h4 >Answer Key of ({{ $test->quiz->title }} ) </h4>
-            <p>{{ $currentDateTime }}</p> 
+        <div class="col text-end">
+           <h3>BODMAS Education Services Pvt Ltd</h3>
+           <p></p>
         </div>
     </div>
-    
     <table>
     <thead>
         <tr>

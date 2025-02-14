@@ -1,96 +1,81 @@
-<div x-data="{ secondsLeft: {{ config('quiz.secondsPerQuestion') }} }" x-init="setInterval(() => {
-    if (secondsLeft > 1) { secondsLeft--; } else {
-        secondsLeft = {{ config('quiz.secondsPerQuestion') }};
-        $wire.nextQuestion();
-    }
-}, 1000);">
-    <div id="timer" class="text-red-600 font-bold mb-4"></div>
-    <div class="mb-2">
-    <p class="text-red-500 font-bold">
-    ⚠️ Do not refresh the page during the test! Be careful before selecting an answer because once selected or skipped, you cannot change it.
-</p>
-        <br> Time left for this question: <span x-text="secondsLeft" class="font-bold"></span> sec.
+<div x-data="{ secondsLeft: {{ config('quiz.secondsPerQuestion') }} }" 
+    x-init="setInterval(() => {
+        if (secondsLeft > 1) { secondsLeft--; } else {
+            secondsLeft = {{ config('quiz.secondsPerQuestion') }};
+            $wire.nextQuestion();
+        }
+    }, 1000);" class="max-w-4xl mx-auto p-4">
+    
+    <div id="timer" class="text-red-600 font-bold mb-4 text-center text-lg"></div>
+    
+    <div class="mb-4 text-center bg-yellow-100 p-3 rounded-lg shadow">
+        <p class="text-red-500 font-bold text-sm md:text-base">
+            ⚠️ Do not refresh the page during the test! Be careful before selecting an answer because once selected or skipped, you cannot change it.
+        </p>
+        <p class="mt-2 text-lg font-semibold">Time left for this question: <span x-text="secondsLeft" class="font-bold"></span> sec.</p>
     </div>
-
-    <span class="text-bold">Question {{ $currentQuestionIndex + 1 }} of {{ $this->questionsCount }}:</span>
-    <h2 class="mb-4 text-2xl">{!! $currentQuestion->text !!}</h2>
-
-    <!-- Display image if file exists -->
+    
+    <span class="text-lg font-bold block text-center">Question {{ $currentQuestionIndex + 1 }} of {{ $this->questionsCount }}:</span>
+    <h2 class="mb-4 text-xl md:text-2xl text-center">{!! $currentQuestion->text !!}</h2>
+    
     @if ($currentQuestion->file)
-    <div class="mt-2 mb-2">
-        <img src="{{ asset('storage/' . $currentQuestion->file) }}" alt="Question Image" class="img-responsive" width="300" height="200">
+    <div class="mt-2 mb-2 flex justify-center">
+        <img src="{{ asset('storage/' . $currentQuestion->file) }}" alt="Question Image" class="max-w-full h-auto rounded-lg shadow-lg">
     </div>
     @endif
-
+    
     @if ($currentQuestion->code_snippet)
-    <pre class="mb-4 border-2 border-solid bg-gray-50 p-2">{{ $currentQuestion->code_snippet }}</pre>
+    <pre class="mb-4 border-2 border-gray-300 bg-gray-50 p-3 text-sm md:text-base overflow-auto">{{ $currentQuestion->code_snippet }}</pre>
     @endif
-    @foreach ($currentQuestion->options as $option)
-    <div>
-        <label for="option.{{ $option->id }}">
+    
+    <div class="space-y-3">
+        @foreach ($currentQuestion->options as $option)
+        <div class="flex items-center bg-gray-100 p-3 rounded-lg shadow-md">
             <input type="radio" id="option.{{ $option->id }}"
                 wire:model.defer="answersOfQuestions.{{ $currentQuestionIndex }}"
-                name="answersOfQuestions.{{ $currentQuestionIndex }}" value="{{ $option->id }}">
-            <span>{!! $option->text !!}</span>
-        </label>
+                name="answersOfQuestions.{{ $currentQuestionIndex }}" value="{{ $option->id }}"
+                class="mr-2 w-5 h-5">
+            <label for="option.{{ $option->id }}" class="text-base md:text-lg">{!! $option->text !!}</label>
+        </div>
+        @endforeach
     </div>
-@endforeach
-
-    <div class="mt-4 flex gap-2">
-        <!-- Previous Button -->
+    
+    <div class="mt-6 flex flex-col md:flex-row justify-center md:justify-between gap-3">
         @if ($currentQuestionIndex > 0)
-        <x-secondary-button x-on:click="secondsLeft = {{ config('quiz.secondsPerQuestion') }}; $wire.previousQuestion();">
+        <x-secondary-button x-on:click="secondsLeft = {{ config('quiz.secondsPerQuestion') }}; $wire.previousQuestion();" class="w-full md:w-auto text-center">
             Previous Question
         </x-secondary-button>
         @endif
-
-        <!-- Next Button -->
+    
         @if ($currentQuestionIndex < $this->questionsCount - 1)
-            <x-secondary-button
-                x-on:click="secondsLeft = {{ config('quiz.secondsPerQuestion') }}; $wire.nextQuestion();">
-                Next Question
-            </x-secondary-button>
-            @else
-            <x-primary-button id="submit-button" x-on:click="$wire.submit();">Submit</x-primary-button>
-            @endif
+        <x-secondary-button x-on:click="secondsLeft = {{ config('quiz.secondsPerQuestion') }}; $wire.nextQuestion();" class="w-full md:w-auto text-center">
+            Next Question
+        </x-secondary-button>
+        @else
+        <x-primary-button id="submit-button" x-on:click="$wire.submit();" class="w-full md:w-auto text-center">
+            Submit
+        </x-primary-button>
+        @endif
     </div>
 </div>
-<style>
-    label {
-    display: flex;
-    align-items: center;
-    gap: 8px; /* Adjust space between radio and text */
-}
 
-input[type="radio"] {
-    margin: 0;
-}
-
-</style>
 <script>
     let timeLeft = 1800; // 30 minutes in seconds
     const timerElement = document.getElementById('timer');
 
     const timerInterval = setInterval(() => {
-        // Calculate minutes and seconds
         const minutes = Math.floor(timeLeft / 60);
         const seconds = timeLeft % 60;
-
-        // Update the timer element
         timerElement.textContent = `Time left: ${minutes} minutes ${seconds} seconds`;
-
         timeLeft--;
-
+        
         if (timeLeft < 0) {
             clearInterval(timerInterval);
             alert('Time is up! Your quiz will be submitted automatically.');
-            const submitButton = document.getElementById('submit-button');
-            if (submitButton) {
-                submitButton.click(); // Trigger the button's click event
-            }
+            document.getElementById('submit-button')?.click();
         }
     }, 1000);
-
+    
     window.addEventListener('beforeunload', function(e) {
         e.preventDefault();
         e.returnValue = '';
