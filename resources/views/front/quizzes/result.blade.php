@@ -5,10 +5,16 @@
                 <div class="p-6 text-gray-900">
                     <div class="row">
                         <div class="col text-center">
-                            <h1 class="text-xl font-bold ">Test Results</h1>
+                            <h1 class="text-xl font-bold ">Test Results ({{ $test->quiz->title }} )</h1>
                         </div>
                         <div class="col text-end">
                             <img src="{{ asset('logo/logo.png') }}" width="200" height="100" alt="Logo">
+                        </div>
+                        <!-- Download Button for PDF -->
+                        <div class="col mt-4 text-center">
+                            <a href="{{ route('test.downloadPDF', $test->id) }}" class="custom-btn">
+                                Download Answer Key
+                            </a>
                         </div>
                     </div>
 
@@ -31,6 +37,46 @@
                                     {{ $test->created_at->format('D m/Y, h:m A') ?? '' }}
                                 </td>
                             </tr>
+                            @php
+                            $obtainedMarks = 0;
+                            $totalMarks = 0;
+
+                            foreach ($results as $result) {
+                            $totalMarks += $result->question->marks; // Sum up total marks for all questions
+                            }
+
+                            $obtainedMarks = $test->result * ($totalMarks / count($results)); // Dynamic calculation based on correct answers
+                            $percentage = ($totalMarks > 0) ? ($obtainedMarks / $totalMarks) * 100 : 0; // Prevent division by zero
+                            @endphp
+
+                            <tr class="w-28">
+                                <th class="border border-solid bg-gray-100 px-6 py-3 text-left text-sm font-semibold uppercase text-slate-600">
+                                    Obtained Marks
+                                </th>
+                                <td class="border border-solid px-6 py-3">
+                                    {{ $obtainedMarks }}
+                                </td>
+                            </tr>
+
+                            <tr class="w-28">
+                                <th class="border border-solid bg-gray-100 px-6 py-3 text-left text-sm font-semibold uppercase text-slate-600">
+                                    Total Marks
+                                </th>
+                                <td class="border border-solid px-6 py-3">
+                                    {{ $totalMarks }}
+                                </td>
+                            </tr>
+
+                            <tr class="w-28">
+                                <th class="border border-solid bg-gray-100 px-6 py-3 text-left text-sm font-semibold uppercase text-slate-600">
+                                    Percentage
+                                </th>
+                                <td class="border border-solid px-6 py-3">
+                                    {{ number_format($percentage, 2) }}%
+                                </td>
+                            </tr>
+
+
                             <tr class="w-28">
                                 <th
                                     class="border border-solid bg-gray-100 px-6 py-3 text-left text-sm font-semibold uppercase text-slate-600">
@@ -158,3 +204,26 @@
         </div>
     </div>
 </x-app-layout>
+<style>
+    .custom-btn {
+        background-color:rgb(235, 30, 30);
+        color: white;
+        padding: 10px 15px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 15px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+    .custom-btn:hover {
+        background-color:rgb(142, 4, 4);
+        color: white;
+    }
+
+    .custom-btn:focus {
+        outline: none;
+        box-shadow: 0 0 5px #4CAF50;
+    }
+</style>

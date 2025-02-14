@@ -32,6 +32,7 @@ Route::middleware('throttle:1,1')->group(function () {
     Route::get('quiz/{quiz}', [HomeController::class, 'show'])->name('quiz.show');
 });
 Route::get('results/{test}', [ResultController::class, 'show'])->name('results.show');
+Route::get('test/{test}/download-pdf', [ResultController::class, 'downloadPDF'])->name('test.downloadPDF');
 
 // protected routes
 Route::middleware('auth')->group(function () {

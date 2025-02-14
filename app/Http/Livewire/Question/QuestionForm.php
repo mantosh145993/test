@@ -102,11 +102,10 @@ class QuestionForm extends Component
     protected $rules = [
         'question.text' => 'required|string',
         'file' => 'nullable|file|max:2048',
-        'question.code_snippet' => 'nullable|string',
         'question.answer_explanation' => 'nullable|string',
-        'question.more_info_link' => 'nullable|url',
         'options' => 'required|array',
         'options.*.text' => 'required|string',
+        'question.marks' => 'required',
     ];
 
     public function updateQuestionText($content)

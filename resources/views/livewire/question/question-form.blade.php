@@ -92,12 +92,12 @@
                             Add Option
                         </x-primary-button> -->
                
-                <div class="mt-4">
+                <!-- <div class="mt-4">
                     <x-input-label for="code_snippet" value="Code snippet" />
                     <x-textarea wire:model.defer="question.code_snippet" id="code_snippet"
                         class="block mt-1 w-full" type="text" name="code_snippet" />
                     <x-input-error :messages="$errors->get('question.code_snippet')" class="mt-2" />
-                </div>
+                </div> -->
 
                 <div class="mt-4">
                     <x-input-label for="answer_explanation" value="Answer explanation" />
@@ -106,11 +106,18 @@
                     <x-input-error :messages="$errors->get('question.answer_explanation')" class="mt-2" />
                 </div>
 
-                <div class="mt-4">
+                <!-- <div class="mt-4">
                     <x-input-label for="more_info_link" value="More info link" />
                     <x-text-input wire:model.defer="question.more_info_link" id="more_info_link"
                         class="block mt-1 w-full" type="text" name="more_info_link" />
                     <x-input-error :messages="$errors->get('question.more_info_link')" class="mt-2" />
+                </div> -->
+
+                <div class="mt-4">
+                    <x-input-label for="marks" value="Marks" />
+                    <x-text-input wire:model.defer="question.marks" id="marks"
+                        class="block mt-1 w-full" type="number" name="marks" />
+                    <x-input-error :messages="$errors->get('question.marks')" class="mt-2" />
                 </div>
 
                 <!-- <div class="mt-4">
@@ -183,8 +190,6 @@
         });
     });
 </script>
-
-
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {

@@ -69,8 +69,8 @@ return [
     | ahead and set this to a sensible default for you out of the box.
     |
     */
+'timezone' => 'Asia/Kolkata', // Change this to your local time zone
 
-    'timezone' => 'UTC',
 
     /*
     |--------------------------------------------------------------------------
