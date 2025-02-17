@@ -35,7 +35,7 @@
                 wire:model.defer="answersOfQuestions.{{ $currentQuestionIndex }}"
                 name="answersOfQuestions.{{ $currentQuestionIndex }}" value="{{ $option->id }}"
                 class="mr-2 w-5 h-5">
-            <label for="option.{{ $option->id }}" class="text-base md:text-lg">{!! $option->text !!}</label>
+            <label for="option.{{ $option->id }}" class="text-base md:text-lg">&nbsp;&nbsp;{!!  $option->text !!}</label>
         </div>
         @endforeach
     </div>

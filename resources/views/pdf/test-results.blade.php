@@ -16,14 +16,11 @@
             margin-top: 20px;
         }
 
-        table,
-        th,
-        td {
+        table, th, td {
             border: 1px solid black;
         }
 
-        th,
-        td {
+        th, td {
             padding: 8px;
             text-align: left;
         }
@@ -50,44 +47,66 @@
         .question-text table td {
             background-color: #fafafa;
         }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 200px; /* Adjust width as needed */
+            height: auto;
+        }
     </style>
 </head>
 
 <body>
+
+    <?php
+$logoPath = public_path('logo/logo.png');
+$type = pathinfo($logoPath, PATHINFO_EXTENSION);
+$data = file_get_contents($logoPath);
+$base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+?>
+    <div class="logo-container">
+    <img src="{{ $base64 }}" class="logo" alt="Logo">
+
+    </div>
     <div class="row">
         <div class="col text-center">
-            <h4 >Test Results ({{ $test->quiz->title }} )</h4>
+            <h4>Test Results ({{ $test->quiz->title }})</h4>
         </div>
         <div class="col text-end">
-           <h3>BODMAS Education Services Pvt Ltd</h3>
-           <p></p>
+            <h3>BODMAS Education Services Pvt Ltd</h3>
+            <p></p>
         </div>
     </div>
+
     <table>
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Question</th>
-            <th>Your Answer</th>
-            <th>Correct Answer</th>
-            <th>Marks</th>
-        </tr>
-    </thead>
-    <tbody>
-        @php $index = 1; @endphp
-        @foreach($results as $result)
-        <tr>
-            <td>{{ $index++ }}</td>
-            <td class="question-text">{!! $result->question->text !!}</td>
-            <td>{!! $result->option->text ?? 'Not Answered' !!}</td>
-            <td>
-                {!! $result->question->options->firstWhere('correct', 1)->text ?? 'No Answer' !!}
-            </td>
-            <td>{!! $result->question->marks !!}</td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Question</th>
+                <th>Your Answer</th>
+                <th>Correct Answer</th>
+                <th>Marks</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php $index = 1; @endphp
+            @foreach($results as $result)
+            <tr>
+                <td>{{ $index++ }}</td>
+                <td class="question-text">{!! $result->question->text !!}</td>
+                <td>{!! $result->option->text ?? 'Not Answered' !!}</td>
+                <td>
+                    {!! $result->question->options->firstWhere('correct', 1)->text ?? 'No Answer' !!}
+                </td>
+                <td>{!! $result->question->marks !!}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 
 </body>
 

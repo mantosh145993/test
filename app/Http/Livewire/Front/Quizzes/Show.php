@@ -77,25 +77,51 @@ class Show extends Component
             'time_spent' => now()->timestamp - $this->startTimeInSeconds
         ]);
 
+        // foreach ($this->answersOfQuestions as $key => $optionId) {
+        //     if (!empty($optionId) && Option::find($optionId)->correct) {
+        //         $result++;
+        //         Answer::create([
+        //             'user_id' => auth()->id(),
+        //             'test_id' => $test->id,
+        //             'question_id' => $this->questions[$key]->id,
+        //             'option_id' => $optionId,
+        //             'correct' => 1
+        //         ]);
+        //     } else {
+        //         Answer::create([
+        //             'user_id' => auth()->id(),
+        //             'test_id' => $test->id,
+        //             'question_id' => $this->questions[$key]->id,
+        //         ]);
+        //     }
+        // }
+
         foreach ($this->answersOfQuestions as $key => $optionId) {
-            if (!empty($optionId) && Option::find($optionId)->correct) {
+            // Check if option exists in the database
+            $option = !empty($optionId) ? Option::find($optionId) : null;
+        
+            // Prepare answer data
+            $answerData = [
+                'user_id' => auth()->id(),
+                'test_id' => $test->id,
+                'question_id' => $this->questions[$key]->id,
+                'correct' => $option && $option->correct ? 1 : 0 // Mark correct if valid, otherwise incorrect
+            ];
+        
+            // Only add option_id if it's valid
+            if (!empty($optionId)) {
+                $answerData['option_id'] = $optionId;
+            }
+        
+            // Insert answer into the database
+            Answer::create($answerData);
+        
+            // Increment result only if the answer is correct
+            if ($option && $option->correct) {
                 $result++;
-                Answer::create([
-                    'user_id' => auth()->id(),
-                    'test_id' => $test->id,
-                    'question_id' => $this->questions[$key]->id,
-                    'option_id' => $optionId,
-                    'correct' => 1
-                ]);
-            } else {
-                Answer::create([
-                    'user_id' => auth()->id(),
-                    'test_id' => $test->id,
-                    'question_id' => $this->questions[$key]->id,
-                ]);
             }
         }
-
+        
         $test->update([
             'result' => $result
         ]);

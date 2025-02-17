@@ -18,6 +18,7 @@
                     <div class="mt-4 overflow-x-auto">
                         <table class="table-auto w-full border-collapse border border-gray-300">
                             <tbody class="bg-white">
+
                                 @if (auth()->user()?->is_admin)
                                 <tr>
                                     <th class="border bg-gray-100 px-4 py-2 text-left text-sm font-semibold uppercase">User</th>
@@ -39,6 +40,9 @@
 
                                     $obtainedMarks = $test->result * ($totalMarks / max(1, count($results))); // Prevent division by zero
                                     $percentage = ($totalMarks > 0) ? ($obtainedMarks / $totalMarks) * 100 : 0;
+                                    $totalQuestions = count($results);
+                                    $attemptedQuestions = $results->whereNotNull('option_id')->count();
+                                    $correctAnswers = $results->where('correct', 1)->count();
                                 @endphp
 
                                 <tr>
@@ -55,9 +59,17 @@
                                     <th class="border bg-gray-100 px-4 py-2 text-left text-sm font-semibold uppercase">Percentage</th>
                                     <td class="border px-4 py-2">{{ number_format($percentage, 2) }}%</td>
                                 </tr>
+                                <tr>
+                                    <th class="border bg-gray-100 px-4 py-2 text-left text-sm font-semibold uppercase">Attempted Question</th>
+                                    <td class="border px-4 py-2">{{ $attemptedQuestions }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="border bg-gray-100 px-4 py-2 text-left text-sm font-semibold uppercase">Correct Question</th>
+                                    <td class="border px-4 py-2">{{ $correctAnswers }}</td>
+                                </tr>
 
                                 <tr>
-                                    <th class="border bg-gray-100 px-4 py-2 text-left text-sm font-semibold uppercase">Result</th>
+                                    <th class="border bg-gray-100 px-4 py-2 text-left text-sm font-semibold uppercase">Correct result from total within time</th>
                                     <td class="border px-4 py-2">
                                         {{ $test->result }} / {{ $questions_count }}
                                         @if ($test->time_spent)

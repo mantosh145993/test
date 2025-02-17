@@ -23,5 +23,6 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('admin', function() {
             return auth()->user()?->is_admin;
         });
+        ini_set('memory_limit', '512M');
     }
 }
