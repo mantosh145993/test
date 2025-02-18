@@ -8,7 +8,7 @@
     
     <div id="timer" class="text-red-600 font-bold mb-4 text-center text-lg"></div>
     
-    <div class="mb-4 text-center bg-yellow-100 p-3 rounded-lg shadow">
+    <div class="mb-4 text-center bg-yellow-100 p-3 rounded-lg shadow warning-box">
         <p class="text-red-500 font-bold text-sm md:text-base">
             ⚠️ Do not refresh the page during the test! Be careful before selecting an answer because once selected or skipped, you cannot change it.
         </p>
@@ -42,13 +42,13 @@
     
     <div class="mt-6 flex flex-col md:flex-row justify-center md:justify-between gap-3">
         @if ($currentQuestionIndex > 0)
-        <x-secondary-button x-on:click="secondsLeft = {{ config('quiz.secondsPerQuestion') }}; $wire.previousQuestion();" class="w-full md:w-auto text-center">
+        <x-secondary-button x-on:click="secondsLeft = {{ config('quiz.secondsPerQuestion') }}; $wire.previousQuestion();" class=" md:w-auto text-center">
             Previous Question
         </x-secondary-button>
         @endif
     
         @if ($currentQuestionIndex < $this->questionsCount - 1)
-        <x-secondary-button x-on:click="secondsLeft = {{ config('quiz.secondsPerQuestion') }}; $wire.nextQuestion();" class="w-full md:w-auto text-center">
+        <x-secondary-button x-on:click="secondsLeft = {{ config('quiz.secondsPerQuestion') }}; $wire.nextQuestion();" class=" md:w-auto text-center">
             Next Question
         </x-secondary-button>
         @else
@@ -82,3 +82,27 @@
         return 'Are you sure you want to leave? Your progress will be lost.';
     });
 </script>
+<style>
+    .quiz-container {
+    max-width: 800px;
+    background: #FFFFFF;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+#timer {
+    font-size: 20px;
+    font-weight: bold;
+    color: #D32F2F;
+    text-align: center;
+    padding: 10px;
+}
+.warning-box {
+    background: #FFF3CD;
+    color: #856404;
+    padding: 12px;
+    border-left: 5px solid #FFC107;
+    border-radius: 8px;
+}
+
+</style>

@@ -69,7 +69,7 @@
                                 </tr>
 
                                 <tr>
-                                    <th class="border bg-gray-100 px-4 py-2 text-left text-sm font-semibold uppercase">Correct result from total within time</th>
+                                    <th class="border bg-gray-100 px-4 py-2 text-left text-sm font-semibold uppercase">Correct result from total question within time</th>
                                     <td class="border px-4 py-2">
                                         {{ $test->result }} / {{ $questions_count }}
                                         @if ($test->time_spent)
